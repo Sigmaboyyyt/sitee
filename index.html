@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NenlyMine — Главная</title>
+    <link rel="stylesheet" href="style.css?v=6"><script>try{if(localStorage.getItem('nenlymine-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}</script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-block"></span>
+                <span class="logo-text">NenlyMine</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="active">Главная</a>
+                <a href="privileges.html">Привилегии</a>
+                <a href="unban.html">Разбан</a>
+                <a href="unmute.html">Размут</a>
+                <a href="titles.html">Титулы</a>
+                <a href="rules.html">Правила</a>
+                <a href="faq.html">FAQ</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">
+                <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <button class="hamburger" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+                <svg class="icon-burger" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+                <svg class="icon-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Добро пожаловать на <span>NenlyMine</span>!</h1>
+                <p class="hero-sub">Выберите привилегию, которая поможет вам достичь вершин. Поддержите сервер и получите уникальные возможности.</p>
+                <div class="hero-buttons">
+                    <a href="privileges.html" class="btn btn-primary">Купить привилегию</a>
+                    <a href="titles.html" class="btn btn-outline">Выбрать титул</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Разделы магазина</h2>
+                <p class="section-sub">Всё, что нужно для комфортной игры на сервере NenlyMine.</p>
+                <div class="grid grid-4">
+                    <a href="privileges.html" class="card card-link" style="--c:#55FF55">
+                        <div class="thumb" style="background:linear-gradient(135deg,#00AA00,#55FF55)">P</div>
+                        <h3 class="card-title overlay-name">Привилегии</h3>
+                        <p class="card-desc">12 привилегий с уникальными возможностями и цветами от Премиума до Владыки.</p>
+                        <span class="card-link-go">Открыть →</span>
+                    </a>
+                    <a href="unban.html" class="card card-link" style="--c:#FF5555">
+                        <div class="thumb" style="background:linear-gradient(135deg,#AA0000,#FF5555)">B</div>
+                        <h3 class="card-title overlay-name">Разбан</h3>
+                        <p class="card-desc">Снимите блокировку аккаунта или IP и вернитесь на сервер.</p>
+                        <span class="card-link-go">Открыть →</span>
+                    </a>
+                    <a href="unmute.html" class="card card-link" style="--c:#FFAA00">
+                        <div class="thumb" style="background:linear-gradient(135deg,#FF8A00,#FFD34D)">M</div>
+                        <h3 class="card-title overlay-name">Размут</h3>
+                        <p class="card-desc">Снимите мут в чате и снова общайтесь с игроками.</p>
+                        <span class="card-link-go">Открыть →</span>
+                    </a>
+                    <a href="titles.html" class="card card-link" style="--c:#FF55FF">
+                        <div class="thumb" style="background:linear-gradient(135deg,#AA00AA,#FF55FF)">T</div>
+                        <h3 class="card-title overlay-name">Титулы</h3>
+                        <p class="card-desc">Уникальные титулы перед ником: золотые, неоновые, радужные.</p>
+                        <span class="card-link-go">Открыть →</span>
+                    </a>
+                    <a href="rules.html" class="card card-link" style="--c:#5555FF">
+                        <div class="thumb" style="background:linear-gradient(135deg,#4D4DFF,#8080FF)">R</div>
+                        <h3 class="card-title overlay-name">Правила</h3>
+                        <p class="card-desc">Полный свод правил сервера и наказаний за нарушения.</p>
+                        <span class="card-link-go">Открыть →</span>
+                    </a>
+                    <a href="faq.html" class="card card-link" style="--c:#55FFFF">
+                        <div class="thumb" style="background:linear-gradient(135deg,#00AAAA,#55FFFF)">?</div>
+                        <h3 class="card-title overlay-name">FAQ</h3>
+                        <p class="card-desc">Ответы на частые вопросы: покупки, сроки и выдача товара.</p>
+                        <span class="card-link-go">Открыть →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2026 <span class="footer-brand">NenlyMine</span>. Не связан с Mojang AB.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

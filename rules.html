@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NenlyMine — Правила</title>
+    <link rel="stylesheet" href="style.css?v=6"><script>try{if(localStorage.getItem('nenlymine-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}</script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-block"></span>
+                <span class="logo-text">NenlyMine</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Главная</a>
+                <a href="privileges.html">Привилегии</a>
+                <a href="unban.html">Разбан</a>
+                <a href="unmute.html">Размут</a>
+                <a href="titles.html">Титулы</a>
+                <a href="rules.html" class="active">Правила</a>
+                <a href="faq.html">FAQ</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">
+                <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <button class="hamburger" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+                <svg class="icon-burger" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+                <svg class="icon-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1 class="page-hero-title">Правила сервера</h1>
+                <p class="page-hero-sub">При регистрации на сервере вы автоматически соглашаетесь с этими правилами. Незнание правил не освобождает вас от ответственности.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="rules-block">
+                    <h3 class="rules-title">1. Игровой процесс <span>⛄</span></h3>
+                    <div class="rule-item">
+                        <span class="rule-num">1.0</span>
+                        <p class="rule-text">Использование читов/багов/авто-кликера/f5</p>
+                        <span class="rule-pun">Блокировка навсегда IP</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.1</span>
+                        <p class="rule-text">Создавать какую-либо помеху игровому процессу (мешать в рг; мешать в пвп в флае/гм и т.д)</p>
+                        <span class="rule-pun">Кик 1/2 — блокировка аккаунта 1д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.2</span>
+                        <p class="rule-text">Нецензурные постройки</p>
+                        <span class="rule-pun">Блокировка аккаунта 1д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.3</span>
+                        <p class="rule-text">Дюп</p>
+                        <span class="rule-pun">Блокировка аккаунта по IP</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.4</span>
+                        <p class="rule-text">Порча территории сервера (бессмысленные столбы и прочее)</p>
+                        <span class="rule-pun">Блокировка аккаунта 2д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.5</span>
+                        <p class="rule-text">Явная накрутка убийств для поднятия игроку статистики</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.6</span>
+                        <p class="rule-text">Использование запрещённых ресурсов</p>
+                        <span class="rule-pun">Блокировка аккаунта 7д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">1.7</span>
+                        <p class="rule-text">Попытка/взлом администрации/донатера/игрока</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                </div>
+
+                <div class="rules-block">
+                    <h3 class="rules-title">2. Чат и общение <span>☃</span></h3>
+                    <div class="rule-item">
+                        <span class="rule-num">2.0</span>
+                        <p class="rule-text">Оскорбление игрока/донатера</p>
+                        <span class="rule-pun">Мут 60 минут</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.1</span>
+                        <p class="rule-text">Аморальное поведение</p>
+                        <span class="rule-pun">Мут 80 минут</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.2</span>
+                        <p class="rule-text">Попрошайничество ресурсов, привилегий, игровой валюты</p>
+                        <span class="rule-pun">Мут 30 минут</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.3</span>
+                        <p class="rule-text">Угрозы</p>
+                        <span class="rule-pun">Блокировка аккаунта 1д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.4</span>
+                        <p class="rule-text">Обман администратора/игрока/донатера</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.5</span>
+                        <p class="rule-text">Пиар</p>
+                        <span class="rule-pun">Блокировка аккаунта по IP</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.6</span>
+                        <p class="rule-text">Оскорбление проекта/администрации</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.7</span>
+                        <p class="rule-text">Выдача себя за администратора</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.8</span>
+                        <p class="rule-text">Оскорбление родителей/религии/национальности</p>
+                        <span class="rule-pun">Блокировка аккаунта 30д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.9</span>
+                        <p class="rule-text">Спам/флуд</p>
+                        <span class="rule-pun">Мут 30 минут</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.10</span>
+                        <p class="rule-text">Много оскорбительных слов, ругательств</p>
+                        <span class="rule-pun">Мут 60 минут</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.11</span>
+                        <p class="rule-text">Многократный капс (написание текста большими буквами)</p>
+                        <span class="rule-pun">Кик с сервера</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.12</span>
+                        <p class="rule-text">Неуважительное отношение к администрации/хелперам</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">2.13</span>
+                        <p class="rule-text">Угроза с ддосом/крашем сервера</p>
+                        <span class="rule-pun">Блокировка аккаунта по IP</span>
+                    </div>
+                </div>
+
+                <div class="rules-block">
+                    <h3 class="rules-title">3. Правила пользования аккаунтом <span>☃</span></h3>
+                    <div class="rule-item">
+                        <span class="rule-num">3.0</span>
+                        <p class="rule-text">Создание никнеймов, которые содержат оскорбительные/аморальные слова, маты</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">3.1</span>
+                        <p class="rule-text">Продажа/передача аккаунта</p>
+                        <span class="rule-pun">Снятие привилегии (если есть). Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">3.2</span>
+                        <p class="rule-text">Создание нечитабельных никнеймов/кланов (например: kwejjrndakakw, o0o0o и т.д)</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">3.3</span>
+                        <p class="rule-text">Создание никнеймов, похожих на никнеймы администраторов</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                </div>
+
+                <div class="rules-block">
+                    <h3 class="rules-title">4. Правила для донатеров <span>❄☃</span></h3>
+                    <div class="rule-item">
+                        <span class="rule-num">4.0</span>
+                        <p class="rule-text">Донатеры/администрация не имеют права продавать, передавать свой аккаунт кому-либо</p>
+                        <span class="rule-pun">Блокировка аккаунта</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">4.1</span>
+                        <p class="rule-text">Донатеры не имеют права кикать/банить/мутить без указанной причины (без доказательств)</p>
+                        <span class="rule-pun">Блокировка аккаунта 30д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">4.2</span>
+                        <p class="rule-text">Донатеры не имеют права разрушать постройки, которые им не принадлежат</p>
+                        <span class="rule-pun">Блокировка аккаунта 3д</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-num">4.3</span>
+                        <p class="rule-text">Донатеры не имеют права использовать возможности привилегий при пвп (флай, гм). Также запрещено убивать, используя телепортацию, либо телепортироваться без причины, создавая помеху</p>
+                        <span class="rule-pun">Блокировка аккаунта 30д</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2026 <span class="footer-brand">NenlyMine</span>. Не связан с Mojang AB.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
