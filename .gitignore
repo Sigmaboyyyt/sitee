@@ -1,2 +1,6 @@
 cloudflared.exe
 *.bat
+panel_key.txt
+panel_key
+__pycache__/
+*.pyc
