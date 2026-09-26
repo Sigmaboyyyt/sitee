@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,8 @@
             <a href="titles.html" class="active">Теги</a>
             <a href="rules.html">Правила</a>
             <a href="faq.html">FAQ</a>
-        </nav>
+                        <a href="cart.html" class="cart-link">Корзина<span id="cartBadge" class="cart-count" style="display:none"></span></a>
+            </nav>
     </header>
 
     <main>
@@ -41,11 +42,11 @@
         <section class="section">
             <div class="container">
                 <div class="grid grid-whole">
-                    <div class="card card-give">
+                    <div class="card card-give" data-kind="tag" data-label="Цветной тег" data-price="0">
                         <div class="thumb" style="background:linear-gradient(135deg,#FF8000,#FFD34D)">#</div>
                         <h3 class="card-title">Цветной тег</h3>
                         <p class="card-desc">Уникальный цветной тег возле ника. Выдаётся всем, кто его приобрёл — достаточно сообщить ник игрока.</p>
-                        <button type="button" class="btn btn-give" onclick="window.location.href='http://127.0.0.1:9898/?kind=tag'">Получить тег</button>
+                        <button type="button" class="btn btn-buy btn-add-cart" data-kind="tag" data-label="Цветной тег" data-price="0">В корзину</button>
                     </div>
                 </div>
             </div>

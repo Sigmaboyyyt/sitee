@@ -2,5 +2,8 @@ cloudflared.exe
 *.bat
 panel_key.txt
 panel_key
+promos.txt
+_key.cfg
 __pycache__/
 *.pyc
+_*

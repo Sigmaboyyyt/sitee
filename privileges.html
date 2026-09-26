@@ -13,7 +13,7 @@
                 <span class="logo-block"></span>
                 <span class="logo-text">NenlyMine</span>
             </a>
-            <nav class="nav">
+            <nav class="nav" id="siteNav">
                 <a href="index.html">Главная</a>
                 <a href="privileges.html" class="active">Привилегии</a>
                 <a href="unban.html">Разбан</a>
@@ -21,6 +21,7 @@
                 <a href="titles.html">Теги</a>
                 <a href="rules.html">Правила</a>
                 <a href="faq.html">FAQ</a>
+                            <a href="cart.html" class="cart-link">Корзина<span id="cartBadge" class="cart-count" style="display:none"></span></a>
             </nav>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">
                 <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -44,7 +45,7 @@
         <section class="section">
             <div class="container">
                 <div class="grid">
-                    <div class="card" style="--c:#00AA00; --const:true">
+                    <div class="card" style="--c:#00AA00; --const:true" data-kind="group" data-group="premium" data-label="Премиум" data-price="99">
                         <div class="card-badge">Базовый</div>
                         <h3 class="card-title premium">Премиум</h3>
                         <ul class="card-features">
@@ -54,10 +55,10 @@
                             <li>Значок в табе</li>
                         </ul>
                         <div class="card-price">99 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#FFAA00; --const:true">
+                    <div class="card" style="--c:#FFAA00; --const:true" data-kind="group" data-group="creative" data-label="Креатив" data-price="199">
                         <div class="card-badge">Популярная</div>
                         <h3 class="card-title creative">Креатив</h3>
                         <ul class="card-features">
@@ -67,10 +68,10 @@
                             <li>Уникальные команды</li>
                         </ul>
                         <div class="card-price">199 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#0000AA; --const:true">
+                    <div class="card" style="--c:#0000AA; --const:true" data-kind="group" data-group="straj" data-label="Страж" data-price="299">
                         <div class="card-badge">Редкая</div>
                         <h3 class="card-title guard">Страж</h3>
                         <ul class="card-features">
@@ -80,10 +81,10 @@
                             <li>Бонус при покупке</li>
                         </ul>
                         <div class="card-price">299 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#55FF55; --const:true">
+                    <div class="card" style="--c:#55FF55; --const:true" data-kind="group" data-group="lord" data-label="Лорд" data-price="399">
                         <div class="card-badge">Редкая</div>
                         <h3 class="card-title lord">Лорд</h3>
                         <ul class="card-features">
@@ -93,10 +94,10 @@
                             <li>Эксклюзивный чат</li>
                         </ul>
                         <div class="card-price">399 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#FFAA00; --const:true">
+                    <div class="card" style="--c:#FFAA00; --const:true" data-kind="group" data-group="povelitel" data-label="Повелитель" data-price="499">
                         <div class="card-badge">Редкая</div>
                         <h3 class="card-title overlord">Повелитель</h3>
                         <ul class="card-features">
@@ -106,10 +107,10 @@
                             <li>Золотая броня в ките</li>
                         </ul>
                         <div class="card-price">499 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#55FFFF; --const:true">
+                    <div class="card" style="--c:#55FFFF; --const:true" data-kind="group" data-group="tsar" data-label="Царь" data-price="699">
                         <div class="card-badge">Элитная</div>
                         <h3 class="card-title king">Царь</h3>
                         <ul class="card-features">
@@ -119,10 +120,10 @@
                             <li>Набор косметики</li>
                         </ul>
                         <div class="card-price">699 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#5555FF; --const:true">
+                    <div class="card" style="--c:#5555FF; --const:true" data-kind="group" data-group="imperator" data-label="Император" data-price="899">
                         <div class="card-badge">Элитная</div>
                         <h3 class="card-title emperor">Император</h3>
                         <ul class="card-features">
@@ -132,10 +133,10 @@
                             <li>Уникальный дабл-кит</li>
                         </ul>
                         <div class="card-price">899 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#FFFF55; --const:true">
+                    <div class="card" style="--c:#FFFF55; --const:true" data-kind="group" data-group="legenda" data-label="Легенда" data-price="1299">
                         <div class="card-badge">Престиж</div>
                         <h3 class="card-title legend">Легенда</h3>
                         <ul class="card-features">
@@ -145,10 +146,10 @@
                             <li>Приоритетная поддержка</li>
                         </ul>
                         <div class="card-price">1299 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#FF55FF; --const:true">
+                    <div class="card" style="--c:#FF55FF; --const:true" data-kind="group" data-group="delux" data-label="Делюкс" data-price="1599">
                         <div class="card-badge">Престиж</div>
                         <h3 class="card-title deluxe">Делюкс</h3>
                         <ul class="card-features">
@@ -158,10 +159,10 @@
                             <li>Эксклюзивные предметы</li>
                         </ul>
                         <div class="card-price">1599 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#AA00AA; --const:true">
+                    <div class="card" style="--c:#AA00AA; --const:true" data-kind="group" data-group="vlastelin" data-label="Властелин" data-price="1999">
                         <div class="card-badge">ВИП</div>
                         <h3 class="card-title master">Властелин</h3>
                         <ul class="card-features">
@@ -171,10 +172,10 @@
                             <li>Тёмный кит в подарок</li>
                         </ul>
                         <div class="card-price">1999 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
-                    <div class="card" style="--c:#AA0000; --const:true">
+                    <div class="card" style="--c:#AA0000; --const:true" data-kind="group" data-group="vladika" data-label="Владыка" data-price="2499">
                         <div class="card-badge">V.I.P.</div>
                         <h3 class="card-title sovereign">Владыка</h3>
                         <ul class="card-features">
@@ -184,7 +185,7 @@
                             <li>Максимум возможностей</li>
                         </ul>
                         <div class="card-price">2499 ₽</div>
-                        <button class="btn btn-buy">Купить</button>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
 
                     <div class="card" style="--c:#55FFFF; --const:true">
@@ -198,6 +199,58 @@
                         </ul>
                         <div class="card-price">499 ₽</div>
                         <button class="btn btn-buy">Купить</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Кейсы</h2>
+                <p class="section-sub">Количество выбирается в корзине при оформлении заказа.</p>
+                <div class="grid">
+                    <div class="card" style="--c:#2FA52F; --const:true" data-kind="case" data-label="Кейс" data-price="49">
+                        <div class="card-badge">Базовый</div>
+                        <h3 class="card-title">Кейс</h3>
+                        <ul class="card-features">
+                            <li>Случайный предмет из набора</li>
+                            <li>Выдаётся сразу после оплаты</li>
+                        </ul>
+                        <div class="card-price">49 ₽ <small>/ шт.</small></div>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
+                    </div>
+
+                    <div class="card" style="--c:#3B3BD9; --const:true" data-kind="seasoncase" data-label="Сезонный кейс" data-price="99">
+                        <div class="card-badge">Популярный</div>
+                        <h3 class="card-title">Сезонный кейс</h3>
+                        <ul class="card-features">
+                            <li>Предметы сезонной коллекции</li>
+                            <li>Повышенный шанс на редкость</li>
+                        </ul>
+                        <div class="card-price">99 ₽ <small>/ шт.</small></div>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
+                    </div>
+
+                    <div class="card" style="--c:#0FA3A3; --const:true" data-kind="weeklycase" data-label="Недельный кейс" data-price="79">
+                        <div class="card-badge">Выгодный</div>
+                        <h3 class="card-title">Недельный кейс</h3>
+                        <ul class="card-features">
+                            <li>Набор недели</li>
+                            <li>Обновляется каждый понедельник</li>
+                        </ul>
+                        <div class="card-price">79 ₽ <small>/ шт.</small></div>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
+                    </div>
+
+                    <div class="card" style="--c:#B98A00; --const:true" data-kind="titlecase" data-label="Титульный кейс" data-price="149">
+                        <div class="card-badge">Редкий</div>
+                        <h3 class="card-title">Титульный кейс</h3>
+                        <ul class="card-features">
+                            <li>Титулы и рамки чата</li>
+                            <li>Шанс на легендарный титул</li>
+                        </ul>
+                        <div class="card-price">149 ₽ <small>/ шт.</small></div>
+                        <button type="button" class="btn btn-buy btn-add-cart">В корзину</button>
                     </div>
                 </div>
             </div>
