@@ -237,6 +237,11 @@ body {
 .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 .container-narrow { max-width: 860px; }
 
+/* Полоса прокрутки сужает область на 15px только на длинных страницах —
+   из-за этого центрированная шапка на них сдвигается. Резервируем место
+   под полосу всегда, чтобы навигация стояла одинаково на всех страницах. */
+html { scrollbar-gutter: stable; }
+
 .site-header {
     position: sticky; top: 0; z-index: 100;
     background: transparent;
