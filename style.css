@@ -165,12 +165,19 @@ body {
 .grid-whole { grid-template-columns: 1fr; }
 
 /* ---------- Шапка ---------- */
+/* blur вынесен в ::before: backdrop-filter на самом .site-header делает его
+   containing block для position:fixed — мобильная панель меню не смогла бы
+   растянуться на весь экран. */
 .site-header {
     position: sticky; top: 0; z-index: 200;
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+}
+.site-header::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
     background: var(--header-bg);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
 }
 .site-header .container {
     display: flex; align-items: center; gap: 18px; min-height: 62px; padding: 0 20px;
@@ -219,11 +226,8 @@ body {
     transition: background .2s, transform .15s;
 }
 .theme-toggle:hover { background: var(--badge-bg); }
-.theme-toggle svg { display: block; }
-.icon-sun { color: #FFB300; }
-[data-theme="dark"] .icon-sun { display: none; }
-[data-theme="dark"] .icon-moon { display: none; }
-:root:not([data-theme="dark"]) .icon-moon { display: none; }
+/* Показ иконок темы задан ниже, в части 2: в светлой теме видна луна,
+   в тёмной — солнце. Дублирующие правила здесь гасили обе иконки. */
 
 /* =====================================================================
    Часть 2 — шапка, навигация, hero, карточки, правила, FAQ, кнопки, корзина
@@ -235,10 +239,14 @@ body {
 
 .site-header {
     position: sticky; top: 0; z-index: 100;
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+}
+.site-header::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
     background: var(--header-bg);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
 }
 .site-header .container {
     display: flex; align-items: center; justify-content: space-between;
@@ -314,7 +322,10 @@ body {
     align-items: center; justify-content: center; cursor: pointer;
 }
 .hamburger svg { pointer-events: none; }
+.icon-burger { display: block; }
 .icon-close { display: none; }
+.hamburger.active .icon-burger { display: none; }
+.hamburger.active .icon-close { display: block; }
 
 /* ---------- Hero (главная) ---------- */
 .hero { padding: 82px 0 66px; text-align: center; }
@@ -657,13 +668,18 @@ textarea { min-height: 108px; resize: vertical; }
 
 @media (max-width: 720px) {
     .container { padding: 0 16px; }
+    /* Закрытая панель уходит за правый край и создаёт горизонтальную
+       прокрутку всей страницы — гасим её на корне. */
+    html { overflow-x: hidden; }
     .nav { position: fixed; top: 0; right: 0; bottom: 0; width: 280px; z-index: 120;
         flex-direction: column; align-items: stretch; gap: 4px;
         background: var(--panel); padding: 78px 18px 24px;
         box-shadow: var(--shadow-hover);
+        overflow-y: auto;
         transform: translateX(100%);
-        transition: transform .28s cubic-bezier(.3,.8,.3,1); }
-    .nav.open { transform: translateX(0); }
+        visibility: hidden; pointer-events: none;
+        transition: transform .28s cubic-bezier(.3,.8,.3,1), visibility .28s; }
+    .nav.open { transform: translateX(0); visibility: visible; pointer-events: auto; }
     .nav a { padding: 12px 14px; font-size: 16px; }
     .nav a.active::after { display: none; }
     .hamburger { display: inline-flex; }
