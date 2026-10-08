@@ -311,7 +311,7 @@
             return;
         }
         if (!/^[A-Za-z0-9_]{3,16}$/.test(nick)) {
-            showResult('Ник Minecraft: 3-16 символов, латиница, цифры и _', false);
+            showResult('Ник игрока: 3-16 символов, латиница, цифры и подчеркивание', false);
             if (form.nick) { form.nick.focus(); }
             return;
         }
