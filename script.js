@@ -336,13 +336,6 @@
     function sendToGive(nick, payload, promo, btn) {
         var url = getApiUrl();
 
-        /* Страница по HTTPS не может обратиться к http - блокировка mixed content. */
-        if (window.location.protocol === 'https:' && url.indexOf('http://') === 0) {
-            showResult('Страница открыта по HTTPS, а сервис выдачи доступен по HTTP - браузер блокирует запрос. Откройте сайт локально (site.bat) или укажите HTTPS-адрес сервиса в настройках подключения.', false);
-            if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
-            return;
-        }
-
         if (btn) { btn.disabled = true; btn.textContent = 'Отправляем...'; }
 
         fetch(url, {
@@ -367,7 +360,7 @@
             if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
         })
         .catch(function (e) {
-            showResult('Не удалось связаться с сервисом выдачи. Проверьте, что give_app.py запущен, и адрес в настройках подключения: ' + url, false);
+            showResult('Не удалось связаться с сервисом выдачи (' + url + '). Убедитесь, что запущен site.bat (или give_app.py отдельно).', false);
             if (window.console) { console.error(e); }
             if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
         });
