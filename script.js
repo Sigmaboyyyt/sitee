@@ -13,6 +13,7 @@
     var THEME_KEY = 'nenlymine-theme';
     var CART_KEY = 'nenlymine-cart';
     var DEFAULT_API = 'http://127.0.0.1:9898/give';
+    var REMOTE_API = '';
 
     var CASE_KINDS = { case: 1, seasoncase: 1, weeklycase: 1, titlecase: 1 };
 
@@ -424,7 +425,14 @@
 
     /* ================= ОТПРАВКА ЗАКАЗА ================= */
     function getApiUrl() {
-        return DEFAULT_API;
+        if (location.protocol === 'file:') {
+            return DEFAULT_API;
+        }
+        if (/\.github\.io$/i.test(location.hostname) ||
+            /\.pages\.dev$/i.test(location.hostname)) {
+            return REMOTE_API || DEFAULT_API;
+        }
+        return location.origin + '/give';
     }
 
     function submitOrder(form) {

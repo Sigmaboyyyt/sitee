@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-"""NenlyMine — локальный сервис выдачи.
-Ключ панели читается из panel_key.txt (в .gitignore — в GitHub не попадёт).
-Сайт (GitHub Pages) общается с этим сервисом через fetch.
-Формат: http://127.0.0.1:9898 (или LAN-IP ноутбука).
+"""NenlyMine — сервис магазина и выдачи.
+Один сервер отдаёт и сам сайт (index.html и остальные страницы),
+и API выдачи POST /give. Ключ панели читается из panel_key.txt
+(в .gitignore — в GitHub не попадёт).
+Адрес: http://127.0.0.1:9898 (админка выдачи — /admin).
 """
-import http.server, json, ssl, urllib.request, urllib.error, os, math, re
-from urllib.parse import quote
+import http.server, json, ssl, urllib.request, urllib.error, os, math, re, mimetypes
+from urllib.parse import quote, unquote
 
 PANEL = "https://mgr.hosting-minecraft.pro"
 SERVER = "57a7571b"  # XZNN
@@ -204,8 +205,54 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Length", "0")
         self.end_headers()
 
+    ALLOWED_EXT = {".html", ".htm", ".css", ".js", ".mjs", ".png", ".jpg",
+                   ".jpeg", ".gif", ".svg", ".webp", ".ico", ".woff", ".woff2",
+                   ".ttf", ".otf", ".map", ".json", ".webmanifest"}
+
+    def _resolve_file(self, url_path):
+        p = url_path.split("?", 1)[0].split("#", 1)[0]
+        p = unquote(p).lstrip("/")
+        if p == "":
+            p = "index.html"
+        base = os.path.dirname(os.path.abspath(__file__))
+        full = os.path.normpath(os.path.join(base, p))
+        if full != base and not full.startswith(base + os.sep):
+            return None
+        return full
+
+    def send_file(self, full):
+        """Отдаёт статический файл сайта. Только безопасные типы —
+        бэкенд, ключи и скрипты (.py/.bat/.txt/.log) недоступны."""
+        ext = os.path.splitext(full)[1].lower()
+        if ext not in self.ALLOWED_EXT:
+            return self.send_json(404, {"ok": False, "message": "Не найдено"})
+        try:
+            with open(full, "rb") as f:
+                body = f.read()
+        except OSError:
+            return self.send_json(404, {"ok": False, "message": "Не найдено"})
+        ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
+        if ctype.startswith("text/") or ext in (
+                ".js", ".mjs", ".json", ".map", ".webmanifest", ".svg"):
+            ctype += "; charset=utf-8"
+        self.send_response(200)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self):
-        self.send_html()
+        path = self.path.split("?", 1)[0]
+        if path in ("/admin", "/admin/"):
+            return self.send_html()
+        if path == "/give":
+            return self.send_json(200, {"ok": True, "message": "Сервис выдачи работает"})
+        full = self._resolve_file(self.path)
+        if not full:
+            return self.send_json(404, {"ok": False, "message": "Не найдено"})
+        if os.path.isdir(full):
+            full = os.path.join(full, "index.html")
+        return self.send_file(full)
 
     def build_command(self, kind, nick, amount, group):
         nick = nick.strip()
@@ -220,9 +267,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 ip = self.resolve_player_ip(nick)
                 if not ip:
                     raise ValueError(
-                        "Не найден IP игрока %s в plugins/data-auth-players" % nick)
-                return "unbanip %s" % ip
-            return "unban %s" % nick
+                        "Не найден IP игрока %s в plugin_data/Auth/players" % nick)
+                return "unban-ip %s" % ip
+            return "untban %s" % nick
         if kind == "case":
             return "givecase %s %d" % (nick, int(amount))
         if kind == "seasoncase":
@@ -448,6 +495,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             "command": done[0]["command"] if done else (plan[0][0] if plan else None)})
 
 if __name__ == "__main__":
-    print("NenlyMine give: http://127.0.0.1:9898")
-    print("(для выдачи с телефона: http://<IP ноутбука>:9898)")
-    http.server.HTTPServer(("0.0.0.0", 9898), Handler).serve_forever()
+    print("NenlyMine — магазин и выдача на одном сервере:")
+    print("  Сайт   : http://127.0.0.1:9898")
+    print("  Админка: http://127.0.0.1:9898/admin")
+    print("  (с телефона: http://<IP компьютера>:9898)")
+    http.server.ThreadingHTTPServer(("0.0.0.0", 9898), Handler).serve_forever()
