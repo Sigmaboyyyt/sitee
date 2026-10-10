@@ -263,12 +263,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if kind == "mute":
             return "unmute %s" % nick
         if kind == "unban":
-            if group == "ip":
-                ip = self.resolve_player_ip(nick)
-                if not ip:
-                    raise ValueError(
-                        "Не найден IP игрока %s в plugin_data/Auth/players" % nick)
-                return "unban-ip %s" % ip
+            if group == "full":
+                return "unfullban %s" % nick
             return "untban %s" % nick
         if kind == "case":
             return "givecase %s %d" % (nick, int(amount))
