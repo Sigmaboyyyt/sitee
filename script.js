@@ -136,6 +136,47 @@
         });
     }
 
+    /* ================= ЖИВОЙ ФОН (пятна + звёзды) ================= */
+    function injectBgFx() {
+        if (document.getElementById('bgfx')) { return; }
+        var fx = document.createElement('div');
+        fx.id = 'bgfx';
+        fx.className = 'bgfx';
+        fx.setAttribute('aria-hidden', 'true');
+        var i, dots = '';
+        for (i = 0; i < 14; i++) { dots += '<span class="bg-dot"></span>'; }
+        fx.innerHTML = '<i class="bg-orb"></i><i class="bg-orb"></i><i class="bg-orb"></i>' + dots;
+        document.body.appendChild(fx);
+        Array.prototype.forEach.call(fx.querySelectorAll('.bg-dot'), function (d) {
+            d.style.left = (Math.random() * 100).toFixed(2) + '%';
+            d.style.top = (Math.random() * 100).toFixed(2) + '%';
+            var s = (1.5 + Math.random() * 2.5).toFixed(1) + 'px';
+            d.style.width = s;
+            d.style.height = s;
+            d.style.animationDelay = (Math.random() * 5).toFixed(1) + 's';
+            d.style.animationDuration = (3 + Math.random() * 5).toFixed(1) + 's';
+        });
+    }
+
+    /* ================= СОЦСЕТИ В ШАПКЕ ================= */
+    var headerSvgVk = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.8 16.2c-5.3 0-8.7-3.7-8.8-9.9h2.7c.1 4.6 2.2 6.5 3.8 6.9V6.3h2.6v3.9c1.6-.2 3.2-1.9 3.8-3.9h2.6c-.4 2.5-2.1 4.2-3.3 4.9 1.2.6 3.2 2.1 3.9 5h-2.9c-.6-1.9-2.1-3.3-4.1-3.6v3.6h-.3z"/></svg>';
+    var headerSvgTg = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.9 4.3 18.6 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.8 13.1l-4.9-1.5c-1.1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.4 1.6z"/></svg>';
+    var headerSvgDs = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19.3 5.3A16 16 0 0 0 15.2 4l-.2.4a13 13 0 0 1 3.6 1.8 11.4 11.4 0 0 0-9.2 0A13 13 0 0 1 13 4.4L12.8 4a16 16 0 0 0-4 1.3C5.8 9.5 5 13.6 5.4 17.6a16 16 0 0 0 4.9 2.4l.6-1a10 10 0 0 1-1.7-.8l.4-.3a11 11 0 0 0 9.6 0l.4.3c-.5.3-1.1.6-1.7.8l.6 1a16 16 0 0 0 4.9-2.4c.5-4.6-.8-8.7-3.1-12.3zM9.7 15.1c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2zm4.6 0c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.7 2-1.7 2z"/></svg>';
+
+    function injectHeaderSocials() {
+        var header = document.querySelector('.site-header .container');
+        if (!header || document.querySelector('.header-socials')) { return; }
+        var wrap = document.createElement('div');
+        wrap.className = 'header-socials';
+        wrap.setAttribute('aria-label', 'Мы в соцсетях');
+        wrap.innerHTML =
+            '<a href="#" class="hs s-vk" aria-label="VK" title="VK">' + headerSvgVk + '</a>' +
+            '<a href="#" class="hs s-tg" aria-label="Telegram" title="Telegram">' + headerSvgTg + '</a>' +
+            '<a href="#" class="hs s-ds" aria-label="Discord" title="Discord">' + headerSvgDs + '</a>';
+        var ref = document.querySelector('.site-header .hamburger');
+        header.insertBefore(wrap, ref);
+    }
+
     /* ================= МОБИЛЬНОЕ МЕНЮ ================= */
     var menuBtn = document.getElementById('menuToggle');
     var nav = document.getElementById('siteNav') || document.querySelector('.nav');
@@ -467,6 +508,8 @@
 
     /* ================= ИНИЦИАЛИЗАЦИЯ ================= */
     initHeader();
+    injectBgFx();
+    injectHeaderSocials();
     initReveal();
     initStagger();
     refreshCartBadge();
