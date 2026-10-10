@@ -1,39 +1,39 @@
 /* -*- coding: utf-8 -*-
  * NenlyMine - script.js
- * 1) Тема (localStorage "nenlymine-theme", атрибут data-theme на <html>)
- * 2) Мобильное меню (.hamburger / .nav.open)
- * 3) КОРЗИНА (localStorage "nenlymine-cart"):
- *    - кнопки ".btn-add-cart" на карточках, счётчик "#cartBadge" в шапке
- *    - страница cart.html: ник + количество (кейсы) + промокод
- * 4) Отправка заказа в локальный give_app.py (POST /give, {nick, items[], promo_code})
+ * 1) РўРµРјР° (localStorage "nenlymine-theme", Р°С‚СЂРёР±СѓС‚ data-theme РЅР° <html>)
+ * 2) РњРѕР±РёР»СЊРЅРѕРµ РјРµРЅСЋ (.hamburger / .nav.open)
+ * 3) РљРћР Р—РРќРђ (localStorage "nenlymine-cart"):
+ *    - РєРЅРѕРїРєРё ".btn-add-cart" РЅР° РєР°СЂС‚РѕС‡РєР°С…, СЃС‡С‘С‚С‡РёРє "#cartBadge" РІ С€Р°РїРєРµ
+ *    - СЃС‚СЂР°РЅРёС†Р° cart.html: РЅРёРє + РєРѕР»РёС‡РµСЃС‚РІРѕ (РєРµР№СЃС‹) + РїСЂРѕРјРѕРєРѕРґ
+ * 4) РћС‚РїСЂР°РІРєР° Р·Р°РєР°Р·Р° РІ Р»РѕРєР°Р»СЊРЅС‹Р№ give_app.py (POST /give, {nick, items[], promo_code})
  */
 (function () {
     'use strict';
 
     var THEME_KEY = 'nenlymine-theme';
     var CART_KEY = 'nenlymine-cart';
-    var API_KEY = 'nenlymine-api';
+    
     var DEFAULT_API = 'http://127.0.0.1:9898/give';
 
     var CASE_KINDS = { case: 1, seasoncase: 1, weeklycase: 1, titlecase: 1 };
 
     var GROUP_NAMES = {
-        premium: 'Премиум', creative: 'Креатив', straj: 'Страж',
-        lord: 'Лорд', delux: 'Делюкс', tsar: 'Царь',
-        imperator: 'Император', legenda: 'Легенда',
-        povelitel: 'Повелитель', vlastelin: 'Властелин',
-        vladika: 'Владыка'
+        premium: 'РџСЂРµРјРёСѓРј', creative: 'РљСЂРµР°С‚РёРІ', straj: 'РЎС‚СЂР°Р¶',
+        lord: 'Р›РѕСЂРґ', delux: 'Р”РµР»СЋРєСЃ', tsar: 'Р¦Р°СЂСЊ',
+        imperator: 'РРјРїРµСЂР°С‚РѕСЂ', legenda: 'Р›РµРіРµРЅРґР°',
+        povelitel: 'РџРѕРІРµР»РёС‚РµР»СЊ', vlastelin: 'Р’Р»Р°СЃС‚РµР»РёРЅ',
+        vladika: 'Р’Р»Р°РґС‹РєР°'
     };
 
     var CASE_NAMES = {
-        case: 'Кейс', seasoncase: 'Сезонный кейс',
-        weeklycase: 'Недельный кейс', titlecase: 'Титульный кейс'
+        case: 'РљРµР№СЃ', seasoncase: 'РЎРµР·РѕРЅРЅС‹Р№ РєРµР№СЃ',
+        weeklycase: 'РќРµРґРµР»СЊРЅС‹Р№ РєРµР№СЃ', titlecase: 'РўРёС‚СѓР»СЊРЅС‹Р№ РєРµР№СЃ'
     };
 
     function $(sel, root) { return (root || document).querySelector(sel); }
     function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
-    /* ================= ТЕМА ================= */
+    /* ================= РўР•РњРђ ================= */
     function applyTheme(theme) {
         var root = document.documentElement;
         if (theme === 'dark') { root.setAttribute('data-theme', 'dark'); }
@@ -50,7 +50,7 @@
         });
     }
 
-    /* ================= МОБИЛЬНОЕ МЕНЮ ================= */
+    /* ================= РњРћР‘РР›Р¬РќРћР• РњР•РќР® ================= */
     var menuBtn = document.getElementById('menuToggle');
     var nav = document.getElementById('siteNav') || document.querySelector('.nav');
 
@@ -82,7 +82,7 @@
         });
     }
 
-    /* ================= ХРАНИЛИЩЕ ================= */
+    /* ================= РҐР РђРќРР›РР©Р• ================= */
     function readStore(key, fallback) {
         try {
             var v = JSON.parse(localStorage.getItem(key) || 'null');
@@ -108,7 +108,7 @@
 
     function isCase(it) { return !!CASE_KINDS[it.kind]; }
 
-    /* ================= СЧЁТЧИК ================= */
+    /* ================= РЎР§РЃРўР§РРљ ================= */
     function cartCount() {
         return getCart().reduce(function (s, it) {
             return s + (isCase(it) ? (it.qty || 1) : 1);
@@ -123,7 +123,7 @@
         });
     }
 
-    /* ================= ТОСТ ================= */
+    /* ================= РўРћРЎРў ================= */
     var toastTimer = null;
     function toast(text) {
         var t = document.getElementById('toast');
@@ -139,7 +139,7 @@
         toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2200);
     }
 
-    /* ================= ДОБАВЛЕНИЕ ================= */
+    /* ================= Р”РћР‘РђР’Р›Р•РќРР• ================= */
     function addToCart(item) {
         var items = getCart();
         var id = itemId(item);
@@ -148,13 +148,13 @@
             if (itemId(items[i]) === id) { found = items[i]; break; }
         }
         if (found) {
-            /* Привилегия и тег выдаются один раз - количество не копится. */
+            /* РџСЂРёРІРёР»РµРіРёСЏ Рё С‚РµРі РІС‹РґР°СЋС‚СЃСЏ РѕРґРёРЅ СЂР°Р· - РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРµ РєРѕРїРёС‚СЃСЏ. */
             if (isCase(found)) { found.qty = (found.qty || 1) + (item.qty || 1); }
-            toast('Уже в корзине: ' + (found.label || ''));
+            toast('РЈР¶Рµ РІ РєРѕСЂР·РёРЅРµ: ' + (found.label || ''));
         } else {
             item.qty = item.qty || 1;
             items.push(item);
-            toast('Добавлено в корзину: ' + (item.label || ''));
+            toast('Р”РѕР±Р°РІР»РµРЅРѕ РІ РєРѕСЂР·РёРЅСѓ: ' + (item.label || ''));
         }
         saveCart(items);
     }
@@ -165,15 +165,15 @@
         var removed = items.splice(index, 1)[0];
         saveCart(items);
         renderCartPage();
-        toast('Удалено: ' + (removed.label || ''));
+        toast('РЈРґР°Р»РµРЅРѕ: ' + (removed.label || ''));
     }
 
-    /* --------- Кнопки "В корзину" на карточках ---------
-       На элементе с .btn-add-cart (или на самой карточке):
+    /* --------- РљРЅРѕРїРєРё "Р’ РєРѕСЂР·РёРЅСѓ" РЅР° РєР°СЂС‚РѕС‡РєР°С… ---------
+       РќР° СЌР»РµРјРµРЅС‚Рµ СЃ .btn-add-cart (РёР»Рё РЅР° СЃР°РјРѕР№ РєР°СЂС‚РѕС‡РєРµ):
          data-kind  = group|tag|case|seasoncase|weeklycase|titlecase
-         data-group = внутренняя группа (для kind=group)
-         data-label = название для показа
-         data-price = цена в рублях (необязательно) */
+         data-group = РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РіСЂСѓРїРїР° (РґР»СЏ kind=group)
+         data-label = РЅР°Р·РІР°РЅРёРµ РґР»СЏ РїРѕРєР°Р·Р°
+         data-price = С†РµРЅР° РІ СЂСѓР±Р»СЏС… (РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ) */
     function bindBuyButtons() {
         $$('.btn-add-cart').forEach(function (btn) {
             var card = btn.closest('.card') || btn;
@@ -187,15 +187,15 @@
 
                 if (!label) {
                     label = kind === 'group' ? (GROUP_NAMES[group] || group)
-                          : kind === 'tag' ? 'Тег'
-                          : (CASE_NAMES[kind] || 'Товар');
+                          : kind === 'tag' ? 'РўРµРі'
+                          : (CASE_NAMES[kind] || 'РўРѕРІР°СЂ');
                 }
                 addToCart({ kind: kind, group: group, label: label, price: price, qty: qty });
             });
         });
     }
 
-    /* ================= СТРАНИЦА КОРЗИНЫ ================= */
+    /* ================= РЎРўР РђРќРР¦Рђ РљРћР Р—РРќР« ================= */
     var qtyTouched = false;
 
     function renderCartPage() {
@@ -211,14 +211,14 @@
             if (emptyEl) { emptyEl.style.display = 'block'; }
             if (formEl) { formEl.style.display = 'none'; }
             listEl.textContent = '';
-            if (sumEl) { sumEl.textContent = '0 ₽'; }
+            if (sumEl) { sumEl.textContent = '0 в‚Ѕ'; }
             return;
         }
 
         if (emptyEl) { emptyEl.style.display = 'none'; }
         if (formEl) { formEl.style.display = 'block'; }
 
-        /* Список позиций (DOM, без innerHTML - безопасно для ника/названий) */
+        /* РЎРїРёСЃРѕРє РїРѕР·РёС†РёР№ (DOM, Р±РµР· innerHTML - Р±РµР·РѕРїР°СЃРЅРѕ РґР»СЏ РЅРёРєР°/РЅР°Р·РІР°РЅРёР№) */
         listEl.textContent = '';
         var total = 0;
         items.forEach(function (it, idx) {
@@ -229,9 +229,9 @@
 
             var badge = document.createElement('span');
             badge.className = 'cart-kind ' + (isCase(it) ? 'is-case' : (it.kind === 'tag' ? 'is-tag' : 'is-group'));
-            badge.textContent = it.kind === 'group' ? 'Привилегия'
-                             : it.kind === 'tag' ? 'Тег'
-                             : 'Кейс';
+            badge.textContent = it.kind === 'group' ? 'РџСЂРёРІРёР»РµРіРёСЏ'
+                             : it.kind === 'tag' ? 'РўРµРі'
+                             : 'РљРµР№СЃ';
             row.appendChild(badge);
 
             var info = document.createElement('div');
@@ -239,15 +239,15 @@
 
             var name = document.createElement('div');
             name.className = 'cart-item-name';
-            name.textContent = it.label || 'Товар';
+            name.textContent = it.label || 'РўРѕРІР°СЂ';
             info.appendChild(name);
 
             var meta = document.createElement('div');
             meta.className = 'cart-item-meta';
             var parts = [];
-            if (isCase(it) && it.qty > 1) { parts.push('в корзине: ' + it.qty + ' шт.'); }
-            if (it.price) { parts.push(it.price.toLocaleString('ru-RU') + ' ₽'); }
-            meta.textContent = parts.join(' • ');
+            if (isCase(it) && it.qty > 1) { parts.push('РІ РєРѕСЂР·РёРЅРµ: ' + it.qty + ' С€С‚.'); }
+            if (it.price) { parts.push(it.price.toLocaleString('ru-RU') + ' в‚Ѕ'); }
+            meta.textContent = parts.join(' вЂў ');
             if (!parts.length) { meta.style.display = 'none'; }
             info.appendChild(meta);
             row.appendChild(info);
@@ -255,21 +255,21 @@
             var del = document.createElement('button');
             del.type = 'button';
             del.className = 'cart-del';
-            del.setAttribute('aria-label', 'Удалить товар');
-            del.textContent = '×';
+            del.setAttribute('aria-label', 'РЈРґР°Р»РёС‚СЊ С‚РѕРІР°СЂ');
+            del.textContent = 'Г—';
             del.addEventListener('click', function () { removeAt(idx); });
             row.appendChild(del);
 
             listEl.appendChild(row);
         });
 
-        if (sumEl) { sumEl.textContent = total.toLocaleString('ru-RU') + ' ₽'; }
+        if (sumEl) { sumEl.textContent = total.toLocaleString('ru-RU') + ' в‚Ѕ'; }
         bindPromoVisibility();
     }
 
-    /* Поля формы зависят от содержимого корзины:
-       - есть кейс  -> показываем количество
-       - есть кейс/привилегия/тег -> показываем промокод */
+    /* РџРѕР»СЏ С„РѕСЂРјС‹ Р·Р°РІРёСЃСЏС‚ РѕС‚ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РєРѕСЂР·РёРЅС‹:
+       - РµСЃС‚СЊ РєРµР№СЃ  -> РїРѕРєР°Р·С‹РІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ
+       - РµСЃС‚СЊ РєРµР№СЃ/РїСЂРёРІРёР»РµРіРёСЏ/С‚РµРі -> РїРѕРєР°Р·С‹РІР°РµРј РїСЂРѕРјРѕРєРѕРґ */
     function bindPromoVisibility() {
         var promoWrap = document.getElementById('promoWrap');
         var qtyWrap = document.getElementById('qtyWrap');
@@ -290,28 +290,25 @@
         }
     }
 
-    /* ================= ОТПРАВКА ЗАКАЗА ================= */
-    function getApiUrl() {
-        var v = readStore(API_KEY, '');
-        return (typeof v === 'string' && v) ? v : DEFAULT_API;
-    }
+    /* ================= РћРўРџР РђР’РљРђ Р—РђРљРђР—Рђ ================= */
+    function getApiUrl(){ return DEFAULT_API; }
 
     function submitOrder(form) {
         var btn = form.querySelector('button[type="submit"]');
         var items = getCart();
 
         if (!items.length) {
-            showResult('Корзина пуста - добавьте товары', false);
+            showResult('РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р° - РґРѕР±Р°РІСЊС‚Рµ С‚РѕРІР°СЂС‹', false);
             return;
         }
         var nick = (form.nick && form.nick.value || '').trim();
         if (!nick) {
-            showResult('Укажите ник игрока', false);
+            showResult('РЈРєР°Р¶РёС‚Рµ РЅРёРє РёРіСЂРѕРєР°', false);
             if (form.nick) { form.nick.focus(); }
             return;
         }
         if (!/^[A-Za-z0-9_]{3,16}$/.test(nick)) {
-            showResult('Ник игрока: 3-16 символов, латиница, цифры и подчеркивание', false);
+            showResult('РќРёРє РёРіСЂРѕРєР°: 3-16 СЃРёРјРІРѕР»РѕРІ, Р»Р°С‚РёРЅРёС†Р°, С†РёС„СЂС‹ Рё РїРѕРґС‡РµСЂРєРёРІР°РЅРёРµ', false);
             if (form.nick) { form.nick.focus(); }
             return;
         }
@@ -336,7 +333,7 @@
     function sendToGive(nick, payload, promo, btn) {
         var url = getApiUrl();
 
-        if (btn) { btn.disabled = true; btn.textContent = 'Отправляем...'; }
+        if (btn) { btn.disabled = true; btn.textContent = 'РћС‚РїСЂР°РІР»СЏРµРј...'; }
 
         fetch(url, {
             method: 'POST',
@@ -346,23 +343,23 @@
         })
         .then(function (r) {
             return r.json().catch(function () {
-                throw new Error('Сервис вернул не-JSON (HTTP ' + r.status + ')');
+                throw new Error('РЎРµСЂРІРёСЃ РІРµСЂРЅСѓР» РЅРµ-JSON (HTTP ' + r.status + ')');
             });
         })
         .then(function (j) {
             if (j && j.ok) {
-                showResult('Заказ выполнен! ' + (j.message || ''), true);
+                showResult('Р—Р°РєР°Р· РІС‹РїРѕР»РЅРµРЅ! ' + (j.message || ''), true);
                 saveCart([]);
                 renderCartPage();
             } else {
-                showResult((j && (j.message || j.error)) || 'Не удалось выполнить заказ', false);
+                showResult((j && (j.message || j.error)) || 'РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ Р·Р°РєР°Р·', false);
             }
-            if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'РћС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·'; }
         })
         .catch(function (e) {
-            showResult('Не удалось связаться с сервисом выдачи (' + url + '). Убедитесь, что запущен site.bat (или give_app.py отдельно).', false);
+            showResult('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРІСЏР·Р°С‚СЊСЃСЏ СЃ СЃРµСЂРІРёСЃРѕРј РІС‹РґР°С‡Рё (' + url + '). РЈР±РµРґРёС‚РµСЃСЊ, С‡С‚Рѕ Р·Р°РїСѓС‰РµРЅ site.bat (РёР»Рё give_app.py РѕС‚РґРµР»СЊРЅРѕ).', false);
             if (window.console) { console.error(e); }
-            if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'РћС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·'; }
         });
     }
 
@@ -379,7 +376,7 @@
         el.style.display = 'block';
     }
 
-    /* ================= НАСТРОЙКИ ПОДКЛЮЧЕНИЯ ================= */
+    /* ================= РќРђРЎРўР РћР™РљР РџРћР”РљР›Р®Р§Р•РќРРЇ ================= */
     function bindApiSettings() {
         var input = document.getElementById('apiUrl');
         if (!input) { return; }
@@ -391,10 +388,10 @@
         });
     }
 
-    /* ================= ИНИЦИАЛИЗАЦИЯ ================= */
+    /* ================= РРќРР¦РРђР›РР—РђР¦РРЇ ================= */
     refreshCartBadge();
     bindBuyButtons();
-    bindApiSettings();
+    
 
     var cartForm = document.getElementById('orderForm');
     if (cartForm) {
