@@ -1,8 +1,8 @@
-﻿# -*- coding: utf-8 -*-
-"""NenlyMine вЂ” Р»РѕРєР°Р»СЊРЅС‹Р№ СЃРµСЂРІРёСЃ РІС‹РґР°С‡Рё.
-РљР»СЋС‡ РїР°РЅРµР»Рё С‡РёС‚Р°РµС‚СЃСЏ РёР· panel_key.txt (РІ .gitignore вЂ” РІ GitHub РЅРµ РїРѕРїР°РґС‘С‚).
-РЎР°Р№С‚ (GitHub Pages) РѕР±С‰Р°РµС‚СЃСЏ СЃ СЌС‚РёРј СЃРµСЂРІРёСЃРѕРј С‡РµСЂРµР· fetch.
-Р¤РѕСЂРјР°С‚: http://127.0.0.1:9898 (РёР»Рё LAN-IP РЅРѕСѓС‚Р±СѓРєР°).
+# -*- coding: utf-8 -*-
+"""NenlyMine — локальный сервис выдачи.
+Ключ панели читается из panel_key.txt (в .gitignore — в GitHub не попадёт).
+Сайт (GitHub Pages) общается с этим сервисом через fetch.
+Формат: http://127.0.0.1:9898 (или LAN-IP ноутбука).
 """
 import http.server, json, ssl, urllib.request, urllib.error, os, math
 
@@ -24,7 +24,6 @@ KINDS = {
     "titlecase":  ("givetitlecase", False, True),
     "tag":        ("tag allow",     False, False),
     "mute":       ("mute",          False, False),
-    "unmute":     ("unmute",        False, False),
     "unban":      ("unban",         False, False),
 }
 
@@ -32,11 +31,11 @@ GROUPS = ["premium", "creative", "straj", "lord", "delux", "tsar",
           "imperator", "legenda", "povelitel", "vlastelin", "vladika"]
 
 def load_promos():
-    """РџСЂРѕРјРѕРєРѕРґС‹: РїСЂРѕР±РµР»/РїСѓСЃС‚Р°СЏ СЃС‚СЂРѕРєР° РѕС‚Р±СЂР°СЃС‹РІР°СЋС‚СЃСЏ.
-    Р¤РѕСЂРјР°С‚ СЃС‚СЂРѕРєРё: РљРћР”|type|value
-      type=percent -> Р±РѕРЅСѓСЃ РІ % Рє РєРѕР»РёС‡РµСЃС‚РІСѓ (С‚РѕР»СЊРєРѕ РєРµР№СЃС‹)
-      type=amount  -> С„РёРєСЃРёСЂРѕРІР°РЅРЅС‹Р№ Р±РѕРЅСѓСЃ Рє РєРѕР»РёС‡РµСЃС‚РІСѓ (С‚РѕР»СЊРєРѕ РєРµР№СЃС‹)
-    Р¤Р°Р№Р» promos.txt РІ .gitignore вЂ” РЅР° GitHub РЅРµ РїРѕРїР°РґС‘С‚.
+    """Промокоды: пробел/пустая строка отбрасываются.
+    Формат строки: КОД|type|value
+      type=percent -> бонус в % к количеству (только кейсы)
+      type=amount  -> фиксированный бонус к количеству (только кейсы)
+    Файл promos.txt в .gitignore — на GitHub не попадёт.
     """
     here = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(here, "promos.txt")
@@ -69,7 +68,7 @@ HTML = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NenlyMine вЂ” РІС‹РґР°С‡Р°</title>
+<title>NenlyMine — выдача</title>
 <style>
 :root{--bg:#0e1220;--panel:#171d33;--panel2:#1d2540;--line:#2a3460;
 --txt:#e8ecff;--mut:#8b93b8;--acc:#55ccff;--acc2:#77ddff;--ok:#4ade80;--bad:#ff6b6b}
@@ -95,21 +94,21 @@ button:disabled{opacity:.5;cursor:wait}
 </head>
 <body>
 <div class="wrap">
-<h1>NenlyMine вЂ” РІС‹РґР°С‡Р°</h1>
-<p class="sub">Р›РѕРєР°Р»СЊРЅС‹Р№ СЃРµСЂРІРёСЃ РёРіСЂРѕРІРѕРіРѕ РјР°РіР°Р·РёРЅР°. РљР»СЋС‡ РїР°РЅРµР»Рё С…СЂР°РЅРёС‚СЃСЏ С‚РѕР»СЊРєРѕ РЅР° СЌС‚РѕРј СѓСЃС‚СЂРѕР№СЃС‚РІРµ Рё РЅР° GitHub РЅРµ РїРѕРїР°РґР°РµС‚.</p>
+<h1>NenlyMine — выдача</h1>
+<p class="sub">Локальный сервис игрового магазина. Ключ панели хранится только на этом устройстве и на GitHub не попадает.</p>
 
-<label for="kind">Р§С‚Рѕ РІС‹РґР°С‘Рј</label>
+<label for="kind">Что выдаём</label>
 <select id="kind">
-  <option value="group">РџСЂРёРІРёР»РµРіРёСЋ (setgroup)</option>
-  <option value="case">РљРµР№СЃ (givecase)</option>
-  <option value="seasoncase">РЎРµР·РѕРЅРЅС‹Р№ РєРµР№СЃ (giveseasoncase)</option>
-  <option value="weeklycase">РќРµРґРµР»СЊРЅС‹Р№ РєРµР№СЃ (giveweeklycase)</option>
-  <option value="titlecase">РўРёС‚СѓР»СЊРЅС‹Р№ РєРµР№СЃ (givetitlecase)</option>
-  <option value="tag">РўРµРі (tag allow)</option>
+  <option value="group">Привилегию (setgroup)</option>
+  <option value="case">Кейс (givecase)</option>
+  <option value="seasoncase">Сезонный кейс (giveseasoncase)</option>
+  <option value="weeklycase">Недельный кейс (giveweeklycase)</option>
+  <option value="titlecase">Титульный кейс (givetitlecase)</option>
+  <option value="tag">Тег (tag allow)</option>
 </select>
 
 <div id="groupWrap">
-  <label for="group">РќР°Р·РІР°РЅРёРµ РіСЂСѓРїРїС‹</label>
+  <label for="group">Название группы</label>
   <select id="group">
     <option>premium</option><option>creative</option><option>straj</option>
     <option>lord</option><option>delux</option><option>tsar</option>
@@ -118,16 +117,16 @@ button:disabled{opacity:.5;cursor:wait}
   </select>
 </div>
 
-<label for="nick">РќРёРє РёРіСЂРѕРєР°</label>
-<input id="nick" placeholder="РќР°РїСЂРёРјРµСЂ: Steve" autocomplete="off">
+<label for="nick">Ник игрока</label>
+<input id="nick" placeholder="Например: Steve" autocomplete="off">
 
 <div id="amountWrap">
-  <label for="amount">РљРѕР»РёС‡РµСЃС‚РІРѕ</label>
+  <label for="amount">Количество</label>
   <input id="amount" type="number" min="1" value="1">
 </div>
 
-<button id="go">Р’С‹РґР°С‚СЊ</button>
-<div class="row">РљРѕРјР°РЅРґР°: <b id="cmd">&nbsp;</b></div>
+<button id="go">Выдать</button>
+<div class="row">Команда: <b id="cmd">&nbsp;</b></div>
 <div id="res"></div>
 </div>
 
@@ -164,7 +163,7 @@ $("go").addEventListener("click",function(){
    el.textContent=j.message||j.error||"";
    btn.disabled=false; refresh();
  })
- .catch(function(e){var el=$("res"); el.className="res show bad"; el.textContent="РћС€РёР±РєР°: "+e; btn.disabled=false;});
+ .catch(function(e){var el=$("res"); el.className="res show bad"; el.textContent="Ошибка: "+e; btn.disabled=false;});
 });
 </script>
 </body>
@@ -183,8 +182,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def _cors(self):
-        """РЎР°Р№С‚ Р¶РёРІС‘С‚ РЅР° GitHub Pages (https), СЃРµСЂРІРёСЃ вЂ” РЅР° http://127.0.0.1:9898.
-        Р‘РµР· СЌС‚РёС… Р·Р°РіРѕР»РѕРІРєРѕРІ Р±СЂР°СѓР·РµСЂ Р±Р»РѕРєРёСЂСѓРµС‚ Р·Р°РїСЂРѕСЃ (cross-origin)."""
+        """Сайт живёт на GitHub Pages (https), сервис — на http://127.0.0.1:9898.
+        Без этих заголовков браузер блокирует запрос (cross-origin)."""
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
@@ -245,16 +244,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return 0, str(e.reason)
 
     def resolve_promo(self, code):
-        """Р’РѕР·РІСЂР°С‰Р°РµС‚ (kind, value) РґР»СЏ РєРѕРґР° РїСЂРѕРјРѕ Р»РёР±Рѕ (None, 0).
-        РљРѕРґС‹ С‡РёС‚Р°СЋС‚СЃСЏ РёР· promos.txt РїСЂРё СЃС‚Р°СЂС‚Рµ (PROMOS)."""
+        """Возвращает (kind, value) для кода промо либо (None, 0).
+        Коды читаются из promos.txt при старте (PROMOS)."""
         code = (code or "").strip().upper()
         if not code:
             return (None, 0)
         return PROMOS.get(code, (None, 0))
 
     def apply_promo(self, kind, amount, promo_kind, promo_val):
-        """РџСЂРѕРјРѕРєРѕРґ РІР»РёСЏРµС‚ С‚РѕР»СЊРєРѕ РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ РєРµР№СЃРѕРІ.
-        Р”Р»СЏ РїСЂРёРІРёР»РµРіРёР№/С‚РµРіРѕРІ РєРѕР»РёС‡РµСЃС‚РІРѕ РІСЃРµРіРґР° 1 (Р±РѕРЅСѓСЃ РЅРµ РїСЂРёРјРµРЅСЏРµС‚СЃСЏ)."""
+        """Промокод влияет только на количество кейсов.
+        Для привилегий/тегов количество всегда 1 (бонус не применяется)."""
         if promo_kind is None:
             return amount
         if kind in ("group", "tag"):
@@ -268,7 +267,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     def do_POST(self):
         if not self.path.startswith("/give"):
-            return self.send_json(404, {"ok": False, "message": "РќРµ РЅР°Р№РґРµРЅРѕ"})
+            return self.send_json(404, {"ok": False, "message": "Не найдено"})
         try:
             n = int(self.headers.get("Content-Length", 0))
             d = json.loads(self.rfile.read(n).decode("utf-8")) if n else {}
@@ -279,9 +278,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         nick = (d.get("nick") or "").strip()
         if not nick:
-            return self.send_json(400, {"ok": False, "message": "РЈРєР°Р¶РёС‚Рµ РЅРёРє РёРіСЂРѕРєР°"})
+            return self.send_json(400, {"ok": False, "message": "Укажите ник игрока"})
 
-        # РџСЂРѕРјРѕРєРѕРґ: РµСЃР»Рё РїРѕР»Рµ РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ Рё РЅРµ РїСѓСЃС‚РѕРµ вЂ” РєРѕРґ РѕР±СЏР·Р°РЅ Р±С‹С‚СЊ РІР°Р»РёРґРЅС‹Рј
+        # Промокод: если поле присутствует и не пустое — код обязан быть валидным
         promo_raw = d.get("promo_code")
         if promo_raw is None:
             promo_raw = d.get("promo")
@@ -292,26 +291,26 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if promo_kind is None:
                 return self.send_json(400, {
                     "ok": False,
-                    "message": "РџСЂРѕРјРѕРєРѕРґ РЅРµ РЅР°Р№РґРµРЅ РёР»Рё РёСЃС‚С‘Рє: " + promo_code})
+                    "message": "Промокод не найден или истёк: " + promo_code})
 
-        # РљРѕСЂР·РёРЅР° С€Р»С‘С‚ items[], РѕРґРёРЅРѕС‡РЅР°СЏ С„РѕСЂРјР° вЂ” kind/amount/group
+        # Корзина шлёт items[], одиночная форма — kind/amount/group
         items = d.get("items")
         if not isinstance(items, list) or not items:
             items = [{"kind": d.get("kind") or "case",
                       "amount": d.get("amount") or 1,
                       "group": d.get("group") or "premium"}]
 
-        # РќРѕСЂРјР°Р»РёР·Р°С†РёСЏ Рё РІР°Р»РёРґР°С†РёСЏ РїРѕР·РёС†РёР№
+        # Нормализация и валидация позиций
         norm = []
         for it in items:
             if not isinstance(it, dict):
                 continue
             kind = (it.get("kind") or "case").strip().lower()
             if kind not in KINDS:
-                return self.send_json(400, {"ok": False, "message": "РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї: " + kind})
+                return self.send_json(400, {"ok": False, "message": "Неизвестный тип: " + kind})
             group = (it.get("group") or "premium").strip()
             if kind == "group" and group not in GROUPS:
-                return self.send_json(400, {"ok": False, "message": "РќРµРёР·РІРµСЃС‚РЅР°СЏ РіСЂСѓРїРїР°: " + group})
+                return self.send_json(400, {"ok": False, "message": "Неизвестная группа: " + group})
             try:
                 amount = int(it.get("amount") or 1)
             except (TypeError, ValueError):
@@ -319,9 +318,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
             amount = max(1, min(999, amount))
             norm.append({"kind": kind, "group": group, "amount": amount})
         if not norm:
-            return self.send_json(400, {"ok": False, "message": "РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р°"})
+            return self.send_json(400, {"ok": False, "message": "Корзина пуста"})
 
-        # РЎР±РѕСЂРєР° РєРѕРјР°РЅРґ СЃ СѓС‡С‘С‚РѕРј РїСЂРѕРјРѕРєРѕРґР°
+        # Сборка команд с учётом промокода
         plan, notes = [], []
         for it in norm:
             final_amount = self.apply_promo(it["kind"], it["amount"], promo_kind, promo_val)
@@ -330,10 +329,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             try:
                 cmd = self.build_command(it["kind"], nick, final_amount, it["group"])
             except Exception as e:
-                return self.send_json(400, {"ok": False, "message": "РћС€РёР±РєР°: " + str(e)})
+                return self.send_json(400, {"ok": False, "message": "Ошибка: " + str(e)})
             plan.append((cmd, it, final_amount))
 
-        # Р’С‹РґР°С‡Р°
+        # Выдача
         done, failed = [], []
         for cmd, it, final_amount in plan:
             code, msg = self.panel_command(cmd)
@@ -348,17 +347,17 @@ class Handler(http.server.BaseHTTPRequestHandler):
         ok = bool(done) and not failed
         parts = []
         if done:
-            parts.append("РІС‹РґР°РЅРѕ: %d" % len(done))
+            parts.append("выдано: %d" % len(done))
         if failed:
-            parts.append("РѕС€РёР±РѕРє: %d" % len(failed))
+            parts.append("ошибок: %d" % len(failed))
         if promo_kind and notes:
-            parts.append("РїСЂРѕРјРѕРєРѕРґ %s (+%s)" % (
+            parts.append("промокод %s (+%s)" % (
                 promo_code,
                 ", ".join(notes)))
 
         return self.send_json(200, {
             "ok": ok,
-            "message": "; ".join(parts) if parts else "РќРµС‚ РґР°РЅРЅС‹С…",
+            "message": "; ".join(parts) if parts else "Нет данных",
             "promo": promo_code or None,
             "done": done,
             "failed": failed,
@@ -366,5 +365,5 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print("NenlyMine give: http://127.0.0.1:9898")
-    print("(РґР»СЏ РІС‹РґР°С‡Рё СЃ С‚РµР»РµС„РѕРЅР°: http://<IP РЅРѕСѓС‚Р±СѓРєР°>:9898)")
+    print("(для выдачи с телефона: http://<IP ноутбука>:9898)")
     http.server.HTTPServer(("0.0.0.0", 9898), Handler).serve_forever()
