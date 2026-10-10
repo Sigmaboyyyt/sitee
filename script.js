@@ -175,7 +175,7 @@
             '<a href="https://t.me/nenlymine" class="hs s-tg" aria-label="Telegram" title="Telegram">' + headerSvgTg + '</a>' +
             '<a href="#ds" class="hs s-ds" aria-label="Discord" title="Discord">' + headerSvgDs + '</a>' +
             '</div>';
-        var anchor = document.querySelector('.hero .hero-copy .hero-buttons');
+        var anchor = document.querySelector('.hero .hero-copy .ip-box');
         if (!anchor) { anchor = document.querySelector('.page-hero .page-hero-sub'); }
         if (!anchor) { return; }
         anchor.parentNode.insertBefore(block, anchor.nextSibling);
