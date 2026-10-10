@@ -4,7 +4,8 @@
 Сайт (GitHub Pages) общается с этим сервисом через fetch.
 Формат: http://127.0.0.1:9898 (или LAN-IP ноутбука).
 """
-import http.server, json, ssl, urllib.request, urllib.error, os, math
+import http.server, json, ssl, urllib.request, urllib.error, os, math, re
+from urllib.parse import quote
 
 PANEL = "https://mgr.hosting-minecraft.pro"
 SERVER = "57a7571b"  # XZNN
@@ -212,6 +213,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return "setgroup %s %s" % (nick, group)
         if kind == "tag":
             return "tag allow %s" % nick
+        if kind == "mute":
+            return "unmute %s" % nick
+        if kind == "unban":
+            if group == "ip":
+                ip = self.resolve_player_ip(nick)
+                if not ip:
+                    raise ValueError(
+                        "Не найден IP игрока %s в plugins/data-auth-players" % nick)
+                return "unbanip %s" % ip
+            return "unban %s" % nick
         if kind == "case":
             return "givecase %s %d" % (nick, int(amount))
         if kind == "seasoncase":
@@ -242,6 +253,74 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 return e.code, ""
         except urllib.error.URLError as e:
             return 0, str(e.reason)
+
+    def panel_get(self, path):
+        """GET-запрос к клиентскому API панели. Возвращает (http_code, text)."""
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        req = urllib.request.Request(
+            "%s%s" % (PANEL, path), method="GET",
+            headers={"Authorization": "Bearer " + KEY, "Accept": "application/json"})
+        try:
+            with urllib.request.urlopen(req, context=ctx, timeout=30) as r:
+                return r.status, r.read().decode("utf-8", "replace")
+        except urllib.error.HTTPError as e:
+            try:
+                return e.code, e.read().decode("utf-8", "replace")
+            except Exception:
+                return e.code, ""
+        except urllib.error.URLError as e:
+            return 0, str(e.reason)
+
+    def resolve_player_ip(self, nick):
+        """Ищет файл игрока в plugins/data-auth-players и возвращает его IP.
+        Панель не умеет читать файлы сервера напрямую — используем
+        Pterodactyl-эндпоинты files/list + files/contents."""
+        needle = (nick or "").strip().lower()
+        entries = []
+        base_path = ""
+        for d in ("/plugins/data-auth-players",):
+            code, body = self.panel_get(
+                "/api/client/servers/%s/files/list?directory=%s" % (SERVER, quote(d, safe="/")))
+            if code not in (200, 204):
+                continue
+            try:
+                data = json.loads(body)
+            except Exception:
+                data = {}
+            entries = (data.get("data") or []) if isinstance(data, dict) else []
+            if entries:
+                base_path = d
+                break
+        if not entries:
+            return None
+
+        candidates = []
+        for e in entries:
+            a = e.get("attributes") or {}
+            name = str(a.get("name") or "")
+            if not name:
+                continue
+            stem = name.lower()
+            for ext in (".yml", ".yaml", ".json", ".txt", ".dat"):
+                if stem.endswith(ext):
+                    stem = stem[: -len(ext)]
+                    break
+            if stem == needle:
+                candidates.insert(0, name)
+            elif needle and needle in stem:
+                candidates.append(name)
+        for name in candidates[:8]:
+            rel = quote("/%s/%s" % (base_path.strip("/"), name), safe="/")
+            code, body = self.panel_get(
+                "/api/client/servers/%s/files/contents?file=%s" % (SERVER, rel))
+            if code not in (200, 204):
+                continue
+            m = re.search(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b", body)
+            if m:
+                return m.group(0)
+        return None
 
     def resolve_promo(self, code):
         """Возвращает (kind, value) для кода промо либо (None, 0).

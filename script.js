@@ -32,20 +32,68 @@
     function $(sel, root) { return (root || document).querySelector(sel); }
     function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
-    /* ================= ТЕМА ================= */
+    /* ================= ТЕМА =================
+       По умолчанию тёмная (атрибута нет), светлая — data-theme="light". */
     function applyTheme(theme) {
         var root = document.documentElement;
-        if (theme === 'dark') { root.setAttribute('data-theme', 'dark'); }
+        if (theme === 'light') { root.setAttribute('data-theme', 'light'); }
         else { root.removeAttribute('data-theme'); }
     }
 
     var themeBtn = document.getElementById('themeToggle');
     if (themeBtn) {
         themeBtn.addEventListener('click', function () {
-            var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-            var next = cur === 'dark' ? 'light' : 'dark';
+            var cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            var next = cur === 'light' ? 'dark' : 'light';
             applyTheme(next);
             try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+        });
+    }
+
+    /* ================= КОПИРОВАНИЕ (IP сервера) ================= */
+    function copyText(text, btn) {
+        function done() {
+            if (!btn) { return; }
+            var prev = btn.textContent;
+            btn.textContent = 'Скопировано';
+            btn.classList.add('is-added');
+            setTimeout(function () { btn.textContent = prev; btn.classList.remove('is-added'); }, 1400);
+        }
+        function fallback() {
+            var ta = document.createElement('textarea');
+            ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallback(); done(); });
+        } else { fallback(); done(); }
+    }
+
+    function bindCopyButtons() {
+        $$('[data-copy]').forEach(function (btn) {
+            btn.addEventListener('click', function () { copyText(btn.getAttribute('data-copy') || '', btn); });
+        });
+        var ipBtn = document.getElementById('copyIp');
+        if (ipBtn) {
+            ipBtn.addEventListener('click', function () {
+                var src = document.getElementById('serverIp');
+                var val = ipBtn.getAttribute('data-ip') || (src ? src.textContent : '');
+                copyText((val || '').trim(), ipBtn);
+            });
+        }
+    }
+
+    /* ================= АККОРДЕОН FAQ ================= */
+    function bindFaq() {
+        $$('.faq-item').forEach(function (item) {
+            var q = item.querySelector('.faq-q');
+            if (!q) { return; }
+            q.addEventListener('click', function () {
+                var open = item.classList.toggle('open');
+                q.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
         });
     }
 
@@ -230,6 +278,7 @@
             badge.className = 'cart-kind ' + (isCase(it) ? 'is-case' : (it.kind === 'tag' ? 'is-tag' : 'is-group'));
             badge.textContent = it.kind === 'group' ? 'Привилегия'
                              : it.kind === 'tag' ? 'Тег'
+                             : it.kind === 'unban' ? 'Разбан'
                              : 'Кейс';
             row.appendChild(badge);
 
@@ -380,6 +429,8 @@
     /* ================= ИНИЦИАЛИЗАЦИЯ ================= */
     refreshCartBadge();
     bindBuyButtons();
+    bindCopyButtons();
+    bindFaq();
 
     var cartForm = document.getElementById('orderForm');
     if (cartForm) {
