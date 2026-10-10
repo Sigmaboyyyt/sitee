@@ -231,7 +231,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return "giveweeklycase %s %d" % (nick, int(amount))
         if kind == "titlecase":
             return "givetitlecase %s %d" % (nick, int(amount))
-        raise ValueError("unknown kind")
+        raise ValueError("unknown kind: %s" % kind)
 
     def panel_command(self, cmd):
         ctx = ssl.create_default_context()
@@ -274,13 +274,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return 0, str(e.reason)
 
     def resolve_player_ip(self, nick):
-        """Ищет файл игрока в plugins/data-auth-players и возвращает его IP.
+        """Ищет файл игрока в plugin_data/Auth/players и возвращает его last_ip.
         Панель не умеет читать файлы сервера напрямую — используем
         Pterodactyl-эндпоинты files/list + files/contents."""
         needle = (nick or "").strip().lower()
         entries = []
         base_path = ""
-        for d in ("/plugins/data-auth-players",):
+        for d in ("/plugin_data/Auth/players", "/plugins/data-auth-players"):
             code, body = self.panel_get(
                 "/api/client/servers/%s/files/list?directory=%s" % (SERVER, quote(d, safe="/")))
             if code not in (200, 204):
@@ -317,9 +317,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 "/api/client/servers/%s/files/contents?file=%s" % (SERVER, rel))
             if code not in (200, 204):
                 continue
-            m = re.search(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b", body)
-            if m:
-                return m.group(0)
+            m = re.search(
+                r"(?im)^\s*last[_-]?ip\s*:\s*([0-9]{1,3}(?:\.[0-9]{1,3}){3})", body)
+            ip = m.group(1) if m else None
+            if not ip:
+                m2 = re.search(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b", body)
+                ip = m2.group(0) if m2 else None
+            if ip:
+                return ip
         return None
 
     def resolve_promo(self, code):
