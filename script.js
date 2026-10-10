@@ -13,7 +13,7 @@
     var THEME_KEY = 'nenlymine-theme';
     var CART_KEY = 'nenlymine-cart';
     var DEFAULT_API = 'http://127.0.0.1:9898/give';
-    var REMOTE_API = '';
+    var REMOTE_API = 'https://nenlymine.vffgeg4.workers.dev/give';
 
     var CASE_KINDS = { case: 1, seasoncase: 1, weeklycase: 1, titlecase: 1 };
 
