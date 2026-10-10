@@ -194,8 +194,15 @@ body::after {
 /* ---------- Типографика-утилиты ---------- */
 .grad-text {
     background: var(--grad);
+    background-size: 200% auto;
     -webkit-background-clip: text; background-clip: text;
     color: transparent;
+    animation: gradFlow 7s linear infinite;
+}
+
+@keyframes gradFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 
 /* ---------- Кнопки ---------- */
@@ -211,11 +218,21 @@ body::after {
 
 .btn-primary,
 .btn-buy {
+    position: relative; overflow: hidden;
     background: var(--grad); color: #fff;
     box-shadow: 0 12px 30px rgba(124, 92, 255, .32);
 }
 .btn-primary:hover,
 .btn-buy:hover { box-shadow: 0 16px 40px rgba(124, 92, 255, .5); transform: translateY(-1px); }
+.btn-primary::after,
+.btn-buy::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, .38), transparent);
+    transform: skewX(-20deg);
+    transition: left .55s ease;
+}
+.btn-primary:hover::after,
+.btn-buy:hover::after { left: 135%; }
 
 .btn-outline {
     background: var(--icon-btn-bg); border-color: var(--border-strong); color: var(--text);
@@ -247,6 +264,11 @@ body::after {
     position: sticky; top: 0; z-index: 100;
     background: transparent;
     border-bottom: 1px solid var(--border);
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+.site-header.is-scrolled {
+    border-bottom-color: var(--border-strong);
+    box-shadow: 0 10px 34px rgba(3, 6, 14, .38);
 }
 .site-header::before {
     content: ""; position: absolute; inset: 0; z-index: -1;
@@ -298,12 +320,19 @@ body::after {
     transition: color .2s, border-color .2s, background .2s, transform .15s;
 }
 .theme-toggle:hover, .cart-link:hover { color: var(--text); border-color: var(--a2); background: var(--hover); }
+.theme-toggle { position: relative; }
 .theme-toggle svg, .cart-link svg { pointer-events: none; }
+.theme-toggle .icon-sun, .theme-toggle .icon-moon { top: 50%; left: 50%; margin: -9px 0 0 -9px; }
 
-.icon-sun { display: block; }
-.icon-moon { display: none; }
-[data-theme="light"] .icon-sun { display: none; }
-[data-theme="light"] .icon-moon { display: block; }
+.icon-sun, .icon-moon {
+    position: absolute;
+    transition: opacity .35s ease, transform .45s cubic-bezier(.3,.8,.3,1);
+    pointer-events: none;
+}
+.icon-sun { opacity: 1; transform: scale(1) rotate(0deg); }
+.icon-moon { opacity: 0; transform: scale(.4) rotate(-90deg); }
+[data-theme="light"] .icon-sun { opacity: 0; transform: scale(.4) rotate(90deg); }
+[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1) rotate(0deg); }
 
 /* Ссылка на корзину — с текстом */
 .cart-link { width: auto; gap: 8px; padding: 0 14px; position: relative; font-size: 14px; font-weight: 700; color: var(--text); }
@@ -397,7 +426,9 @@ body::after {
 .stat { text-align: center; padding: 6px 10px; }
 .stat + .stat { border-left: 1px solid var(--border); }
 .stat-num { display: block; font-size: 30px; font-weight: 800; letter-spacing: -.5px;
-    background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    background: var(--grad); background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradFlow 7s linear infinite; }
 .stat-label { font-size: 13px; color: var(--muted); font-weight: 600; }
 
 /* ---------- Секции ---------- */
@@ -600,12 +631,12 @@ textarea { min-height: 108px; resize: vertical; }
 /* ---------- FAQ ---------- */
 .faq-block { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 .faq-item { border: 1px solid var(--border); border-radius: 15px; overflow: hidden;
-    background: var(--panel); transition: border-color .2s; }
-.faq-item:hover { border-color: var(--border-strong); }
+    background: var(--panel); transition: border-color .2s, transform .2s; }
+.faq-item:hover { border-color: var(--border-strong); transform: translateY(-2px); }
 .faq-q { width: 100%; display: flex; align-items: center; gap: 12px; padding: 17px 18px;
     background: none; border: 0; color: var(--text); font-size: 15.5px;
     font-weight: 700; font-family: inherit; text-align: left; cursor: pointer; }
-.faq-q .faq-arrow { margin-left: auto; transition: transform .25s; color: var(--muted); flex-shrink: 0;
+.faq-q .faq-arrow { margin-left: auto; transition: transform .25s, color .25s; color: var(--muted); flex-shrink: 0;
     width: 20px; height: 20px; border-radius: 6px; position: relative; }
 .faq-q .faq-arrow::before {
     content: ""; position: absolute; inset: 0;
@@ -614,8 +645,11 @@ textarea { min-height: 108px; resize: vertical; }
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
 }
 .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--a2); }
-.faq-a { display: none; padding: 0 18px 17px; color: var(--muted); font-size: 14px; line-height: 1.65; }
-.faq-item.open .faq-a { display: block; }
+.faq-a { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .38s cubic-bezier(.2,.75,.3,1); }
+.faq-a p { overflow: hidden; min-height: 0; padding: 0 18px 17px; margin: 0;
+    color: var(--muted); font-size: 14px; line-height: 1.65; }
+.faq-item.open .faq-a { grid-template-rows: 1fr; }
 
 /* ---------- Корзина ---------- */
 .cart-page { max-width: 660px; margin: 0 auto; }
@@ -680,6 +714,50 @@ textarea { min-height: 108px; resize: vertical; }
 /* ---------- Служебное ---------- */
 .btn-add-cart { cursor: pointer; }
 .btn-add-cart.is-added { border-color: var(--a3); color: var(--a3); }
+
+/* ---------- Анимации ---------- */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* Появление hero при загрузке */
+.hero .hero-copy > * { animation: fadeUp .6s ease both; }
+.hero .hero-copy > *:nth-child(2) { animation-delay: .08s; }
+.hero .hero-copy > *:nth-child(3) { animation-delay: .16s; }
+.hero .hero-copy > *:nth-child(4) { animation-delay: .24s; }
+.hero .hero-copy > *:nth-child(5) { animation-delay: .32s; }
+.hero-panel { animation: fadeUp .65s cubic-bezier(.2,.7,.3,1) .18s both; }
+.stats-grid { animation: fadeUp .55s ease .28s both; }
+.page-hero .page-hero-title, .page-hero .page-hero-sub { animation: fadeUp .55s ease both; }
+.page-hero .page-hero-sub { animation-delay: .1s; }
+
+/* Плавное появление карточек: JS ставит --i для ступенчатой задержки */
+html.js .grid > * {
+    opacity: 0;
+    animation: fadeUp .55s cubic-bezier(.2,.7,.3,1) both;
+    animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* Секции всплывают при прокрутке (IntersectionObserver добавляет .in) */
+html.js .reveal { opacity: 0; transform: translateY(24px);
+    transition: opacity .6s ease, transform .65s cubic-bezier(.2,.7,.3,1); }
+html.js .reveal.in { opacity: 1; transform: none; }
+
+/* Ховер-свечение карточек чуть живее */
+.card::after { transition: opacity .35s ease; }
+.card:hover::after { opacity: .14; }
+
+/* Уважение к настройке «меньше движения» */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001s !important;
+        animation-delay: 0s !important;
+        transition-duration: .001s !important;
+        transition-delay: 0s !important;
+    }
+    html.js .reveal { opacity: 1; transform: none; }
+}
 
 /* ---------- Адаптив ---------- */
 @media (max-width: 1040px) {

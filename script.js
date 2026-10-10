@@ -97,6 +97,45 @@
         });
     }
 
+    /* ================= АНИМАЦИИ ПРИ ПРОКРУТКЕ ================= */
+    document.documentElement.classList.add('js');
+
+    function initHeader() {
+        var h = document.querySelector('.site-header');
+        if (!h) { return; }
+        var onScroll = function () {
+            h.classList.toggle('is-scrolled', window.scrollY > 8);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    }
+
+    function initReveal() {
+        var els = $$('.section, .page-hero');
+        els.forEach(function (el) { el.classList.add('reveal'); });
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) {
+                    if (en.isIntersecting) {
+                        en.target.classList.add('in');
+                        io.unobserve(en.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+            els.forEach(function (el) { io.observe(el); });
+        } else {
+            els.forEach(function (el) { el.classList.add('in'); });
+        }
+    }
+
+    function initStagger() {
+        $$('.grid').forEach(function (g) {
+            Array.prototype.forEach.call(g.children, function (c, i) {
+                c.style.setProperty('--i', String(i));
+            });
+        });
+    }
+
     /* ================= МОБИЛЬНОЕ МЕНЮ ================= */
     var menuBtn = document.getElementById('menuToggle');
     var nav = document.getElementById('siteNav') || document.querySelector('.nav');
@@ -427,6 +466,9 @@
     }
 
     /* ================= ИНИЦИАЛИЗАЦИЯ ================= */
+    initHeader();
+    initReveal();
+    initStagger();
     refreshCartBadge();
     bindBuyButtons();
     bindCopyButtons();
