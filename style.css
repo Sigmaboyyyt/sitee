@@ -389,16 +389,15 @@ body::after {
 .hamburger.active .icon-burger { display: none; }
 .hamburger.active .icon-close { display: block; }
 
-/* ---------- Соцсети в шапке (правый верхний угол) ---------- */
-.site-header .logo { order: 0; }
-.site-header .nav { order: 1; }
-.site-header .header-socials { order: 2; }
-.site-header .theme-toggle { order: 3; }
-.site-header .hamburger { order: 4; }
-
-.header-socials { display: flex; align-items: center; gap: 8px; }
+/* ---------- Соцсети в основном экране ---------- */
+.hero-socials { margin-top: 26px; }
+.hero-socials-inner { display: flex; align-items: center; gap: 12px; }
+.hero-socials-label {
+    font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--text-soft); opacity: .75; margin-right: 2px;
+}
 .hs {
-    width: 42px; height: 42px; border-radius: 12px;
+    width: 46px; height: 46px; border-radius: 14px;
     display: inline-flex; align-items: center; justify-content: center;
     border: 1px solid var(--border-strong);
     background: var(--icon-btn-bg); color: var(--text-soft);
@@ -854,7 +853,6 @@ html.js .reveal.in { opacity: 1; transform: none; }
 }
 
 @media (max-width: 560px) {
-    .header-socials { display: none; }
     .cart-kind { min-width: 66px; font-size: 10.5px; padding: 5px 8px; }
     .toast { left: 16px; right: 16px; transform: translateY(20px); max-width: none; }
     .toast.show { transform: translateY(0); }
