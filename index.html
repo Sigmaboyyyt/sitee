@@ -51,9 +51,17 @@
                         <a href="#servers" class="btn btn-outline">Как играть</a>
                     </div>
                     <div class="ip-box">
-                        <span class="ip-label">IP сервера</span>
-                        <code id="serverIp">play.nenlymine.net:19150</code>
-                        <button type="button" class="btn btn-copy" id="copyIp" data-ip="play.nenlymine.net:19150">Скопировать</button>
+                        <div class="ip-rows">
+                            <div class="ip-row">
+                                <span class="ip-label">IP сервера</span>
+                                <code id="serverIp">play.nenlymine.net</code>
+                            </div>
+                            <div class="ip-row">
+                                <span class="ip-label">Порт</span>
+                                <code>19150</code>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-copy" id="copyIp" data-ip="play.nenlymine.net">Скопировать</button>
                     </div>
                 </div>
                 <div class="hero-panel">
@@ -242,8 +250,17 @@
                             <span class="status-dot">Онлайн</span>
                         </div>
                         <div class="server-ip">
-                            <code class="server-ip-value">play.nenlymine.net:19150</code>
-                            <button type="button" class="btn btn-copy" data-copy="play.nenlymine.net:19150">Копировать</button>
+                            <div class="server-ip-fields">
+                                <div class="server-ip-row">
+                                    <span class="server-ip-label">IP</span>
+                                    <code class="server-ip-value">play.nenlymine.net</code>
+                                </div>
+                                <div class="server-ip-row">
+                                    <span class="server-ip-label">Порт</span>
+                                    <code>19150</code>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-copy" data-copy="play.nenlymine.net">Копировать</button>
                         </div>
                         <div class="server-tags">
                             <span class="tag-chip">1.16.5+</span>
